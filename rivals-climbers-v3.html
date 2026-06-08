@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Rivals Climbers Program</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#07090f;
+      --card:#111520;
+      --card-hover:#161c2a;
+      --border:rgba(255,255,255,.07);
+      --ink:#e4e9f2;
+      --muted:#828997;
+      --cyan:#00d1ff;
+      --pink:#ff4d80;
+      --mint:#3dffc0;
+      --amber:#ffcc44;
+      --r:14px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--bg);
+      color:var(--ink);
+      font-family:'DM Sans',system-ui,sans-serif;
+      font-size:15px;
+      line-height:1.65;
+      min-height:100vh;
+      background-image:
+        radial-gradient(ellipse 1100px 600px at 110% -5%,rgba(0,209,255,.13),transparent 60%),
+        radial-gradient(ellipse 800px 700px at -10% 100%,rgba(255,77,128,.10),transparent 60%);
+    }
+
+    /* links */
+    a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(0,209,255,.3)}
+    a:hover{color:#fff;border-bottom-color:var(--cyan)}
+
+    .page{max-width:1120px;margin:0 auto;padding:32px 20px 80px}
+
+    /* ── HERO ── */
+    .hero{
+      position:relative;border-radius:20px;padding:44px 38px 38px;
+      background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+      overflow:hidden;margin-bottom:32px;
+    }
+    .hero::before{
+      content:"";position:absolute;inset:-1px;border-radius:20px;padding:1px;
+      background:linear-gradient(135deg,rgba(0,209,255,.7),rgba(255,77,128,.6));
+      -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;mask-composite:exclude;
+    }
+    .hero-eye{letter-spacing:.12em;text-transform:uppercase;font-size:12px;font-weight:700;color:var(--cyan);margin-bottom:10px;display:block}
+    .hero h1{
+      font-family:'Rajdhani',sans-serif;font-size:clamp(34px,6vw,60px);line-height:1;letter-spacing:.5px;
+      background:linear-gradient(135deg,#fff 30%,var(--cyan));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      margin-bottom:14px;
+    }
+    .hero-tagline{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:rgba(0,209,255,.6);margin-bottom:14px;font-weight:600}
+    .hero-sub{font-size:17px;color:#c4cad4;max-width:780px;line-height:1.55}
+
+    /* pills */
+    .pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+    .pill{display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:14px;font-weight:500;border-bottom:none}
+    .pill:hover{background:rgba(255,255,255,.08);border-bottom:none}
+    .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .d-cyan{background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+    .d-pink{background:var(--pink);box-shadow:0 0 8px var(--pink)}
+    .d-mint{background:var(--mint);box-shadow:0 0 8px var(--mint)}
+
+    /* section label */
+    .sec-label{letter-spacing:.1em;text-transform:uppercase;font-size:11px;font-weight:700;color:var(--muted);margin:36px 0 14px}
+
+    /* card */
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;transition:background .2s}
+    .card:hover{background:var(--card-hover)}
+    .card-title{font-family:'Rajdhani',sans-serif;font-size:20px;letter-spacing:.3px;margin-bottom:10px;display:flex;align-items:center;gap:9px}
+    .card ul{padding-left:18px;color:#d4dae5}
+    .card li{margin:6px 0}
+
+    /* featured weekly/monthly */
+    .featured{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media(max-width:800px){.featured{grid-template-columns:1fr}}
+    .fc{position:relative;border-radius:var(--r);padding:26px 24px;overflow:hidden}
+    .fc::before{content:"";position:absolute;inset:-1px;border-radius:var(--r);padding:1px;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+    .fc-w{background:linear-gradient(155deg,rgba(0,209,255,.13),rgba(0,209,255,.04))}
+    .fc-w::before{background:linear-gradient(135deg,rgba(0,209,255,.9),rgba(0,209,255,.2))}
+    .fc-m{background:linear-gradient(155deg,rgba(255,77,128,.13),rgba(255,77,128,.04))}
+    .fc-m::before{background:linear-gradient(135deg,rgba(255,77,128,.9),rgba(255,77,128,.2))}
+    .fc-badge{display:inline-block;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+    .fc-w .fc-badge{background:rgba(0,209,255,.15);color:var(--cyan)}
+    .fc-m .fc-badge{background:rgba(255,77,128,.15);color:var(--pink)}
+    .fc-title{font-family:'Rajdhani',sans-serif;font-size:28px;letter-spacing:.3px;margin-bottom:10px}
+    .fc-w .fc-title{color:var(--cyan)}
+    .fc-m .fc-title{color:var(--pink)}
+    .fc ul{padding-left:18px;color:#d4dae5}
+    .fc li{margin:7px 0}
+
+    /* grids */
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    @media(max-width:1000px){.grid3{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:640px){.grid3{grid-template-columns:1fr}}
+    .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    @media(max-width:1000px){.grid4{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:560px){.grid4{grid-template-columns:1fr}}
+
+    /* discord table */
+    .dtable{width:100%;border-collapse:collapse;font-size:14px}
+    .dtable th{text-align:left;color:var(--muted);font-weight:600;padding:8px 12px;border-bottom:1px solid var(--border)}
+    .dtable td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .dtable tr:last-child td{border-bottom:none}
+    .ch{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;color:var(--cyan)}
+    .tbd{font-size:11px;color:var(--muted);margin-left:4px}
+
+    /* callout */
+    .callout{border-left:3px solid var(--amber);background:rgba(255,204,68,.07);padding:12px 16px;border-radius:0 10px 10px 0;color:#f0eacc;font-size:14px;margin-top:14px}
+
+    /* conduct list */
+    .clist{padding-left:0;list-style:none}
+    .clist li{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:14px;color:#d4dae5}
+    .clist li:last-child{border-bottom:none}
+    .ico{font-size:15px;flex-shrink:0;margin-top:2px}
+
+    /* faq */
+    .faq-item{border-bottom:1px solid var(--border);padding:14px 0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-q{font-weight:600;color:#e9ecf2;margin-bottom:5px}
+    .faq-a{color:var(--muted);font-size:14px}
+
+    footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);color:var(--muted);font-size:13px;text-align:center}
+
+    @media(max-width:600px){
+      .hero{padding:28px 20px 24px}
+      .page{padding:20px 14px 60px}
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <header class="hero">
+    <span class="hero-eye">Marvel Rivals × Creators</span>
+    <h1>Rivals Climbers<br>Program</h1>
+    <div class="hero-tagline">Climb Together, Create Forever</div>
+    <p class="hero-sub">For Marvel Rivals creators still on their way up — passionate, creative, and hungry to grow. Get rewarded consistently through <strong>weekly events</strong> and <strong>monthly rewards</strong>, and earn a real shot at the Partner Program.</p>
+    <div class="pills">
+      <span class="pill"><span class="dot d-cyan"></span>📅 Weekly Events</span>
+      <span class="pill"><span class="dot d-pink"></span>🏆 Monthly Rewards</span>
+      <span class="pill"><span class="dot d-mint"></span>🎁 Rich Perks</span>
+    </div>
+  </header>
+
+  <!-- CORE ACTIVITIES -->
+  <div class="sec-label">⚡ Core Activities</div>
+  <div class="featured">
+    <div class="fc fc-w">
+      <div class="fc-badge">Every Week</div>
+      <div class="fc-title">📅 Weekly Events</div>
+      <ul>
+        <li>New event tracks announced each week in Discord.</li>
+        <li>Submit your Marvel Rivals content to the active track.</li>
+        <li><strong>Top-viewed submissions</strong> per track win gift-code incentives. <a href="https://docs.google.com/document/d/1-N-cHL1b4Zx0JI2MTG6_KNDx90MY90Xa-98nLRv_d90/edit?tab=t.0" target="_blank" rel="noopener">See detailed rules →</a></li>
+      </ul>
+    </div>
+    <div class="fc fc-m">
+      <div class="fc-badge">Every Month</div>
+      <div class="fc-title">🏆 Monthly Rewards</div>
+      <ul>
+        <li>Monthly recognition and rewards for sustained contributions.</li>
+        <li>Stay consistently active to stay in the running.</li>
+        <li>No fixed quota — just keep creating Marvel Rivals content.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PROGRAM BENEFITS -->
+  <div class="sec-label">🎁 Program Benefits</div>
+  <div class="grid4">
+    <div class="card">
+      <div class="card-title">🚀 Fast-Lane to Partner</div>
+      <ul>
+        <li>A separate, <strong>faster review route</strong> to the official Marvel Rivals Partner Program.</li>
+        <li>Exclusive to Climbers members only.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">📣 Traffic Boost</div>
+      <ul>
+        <li>Your best content may get pushed with <strong>paid promotion</strong>.</li>
+        <li>The program backs standout Climbers work to maximize your reach.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">🎨 IP Assets Access</div>
+      <ul>
+        <li>Logos (transparent), official character art & video</li>
+        <li>Authorized BGM 🎵, wallpapers & promo art</li>
+        <li>Via <em>#climbers-resources</em> in the private Discord</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">💬 Discord Role</div>
+      <ul>
+        <li>Receive the exclusive <strong>@Climber</strong> role on joining.</li>
+        <li>Private community: chat, events, learning resources.</li>
+        <li>More benefits on the way 👀</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- HOW TO JOIN -->
+  <div class="sec-label">🔗 How to Join</div>
+  <div class="card">
+    <div class="card-title">Requirements</div>
+    <ul>
+      <li>Currently <strong>invitation-only</strong> — public applications planned for the future.</li>
+      <li>Must be <strong>18 years or older</strong>.</li>
+      <li>At least <strong>30% of your content</strong> must be related to Marvel Rivals.</li>
+      <li>Must adhere to program guidelines and Terms of Service.</li>
+    </ul>
+  </div>
+
+  <!-- IP ASSETS -->
+  <div class="sec-label">🛡️ IP Assets — Available Resources & Usage Scope</div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">What's Available</div>
+      <ul>
+        <li>Marvel Rivals logos (transparent background)</li>
+        <li>Official character images & video assets</li>
+        <li>Background music (BGM) authorized for creators 🎵</li>
+        <li>Wallpapers and promotional art</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Usage Rules</div>
+      <ul>
+        <li>Only for Marvel Rivals content <strong>published on social platforms</strong>.</li>
+        <li>Supported: YouTube, TikTok, Twitter/X, Instagram, Twitch.</li>
+        <li>Do not use outside these platforms or for other purposes.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- DISCORD STRUCTURE -->
+  <div class="sec-label">🏠 Discord Community Structure</div>
+  <div class="card">
+    <table class="dtable">
+      <thead><tr><th>Channel</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td class="ch">#climbers-onboarding</td><td>Code of conduct &amp; content guidelines</td></tr>
+        <tr><td class="ch">#climbers-announcement</td><td>Important announcements</td></tr>
+        <tr><td class="ch">#climbers-events</td><td>Event announcements &amp; winner reveals 🎉</td></tr>
+        <tr><td class="ch">#climbers-chat</td><td>Open chat to connect &amp; build community</td></tr>
+        <tr><td class="ch">#climbers-assets<span class="tbd">(TBD)</span></td><td>Official IP asset library 🎨</td></tr>
+        <tr><td class="ch">#climbers-academy<span class="tbd">(TBD)</span></td><td>Tutorials &amp; creator tips 📚</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- REGISTRATION -->
+  <div class="sec-label">🧭 Registration for Tracking</div>
+  <div class="card">
+    <ul>
+      <li>🎥 <strong>Livestream creators:</strong> No registration needed — we handle tracking automatically.</li>
+      <li>📹 <strong>Long/Short video creators:</strong> Register on the <a href="https://act.neteasegames.com/activity/3sSEvo" target="_blank" rel="noopener">Climbers Registration Website</a> and follow the <a href="https://docs.google.com/document/d/1RmUEO0Z4RaDxC78sD6EvzYippp2Pjutkn_geYo311XQ/edit?tab=t.0#heading=h.qxoxgualwnce" target="_blank" rel="noopener">Registration Guideline</a>.</li>
+      <li>✍️ <strong>Writers/Illustrators:</strong> We'll handle tracking for you — no registration needed.</li>
+      <li>Publishing on multiple platforms? Register each platform separately.</li>
+    </ul>
+    <div class="callout">⚠️ Registration is required for data tracking and event eligibility. Complete it promptly to avoid missing out on rewards. Contact <strong>@Climber-helper</strong> in Discord for help.</div>
+  </div>
+
+  <!-- STAYING ACTIVE -->
+  <div class="sec-label">🔥 Staying Active</div>
+  <div class="card">
+    <ul>
+      <li>Consistently publish Marvel Rivals-related content.</li>
+      <li>No fixed monthly quota — but stay active!</li>
+      <li>1 month inactive → reminder DM from our team.</li>
+      <li>2 consecutive months inactive → removal from the Climbers Program.</li>
+    </ul>
+  </div>
+
+  <!-- CONTENT GUIDELINES -->
+  <div class="sec-label">📋 Content Guidelines</div>
+  <div class="card">
+    <ul>
+      <li>All content must comply with the <a href="https://docs.google.com/document/d/1Y2mvJdZ_i2b1MtvutwZzvZnL9TJaGxuhK-CZ14JRU10/edit?tab=t.0" target="_blank" rel="noopener">Marvel Rivals Climber Content Guidelines</a>.</li>
+      <li>Need help? Reach out to the <strong>Rivals Climbers Program Helpers</strong> for any concerns or questions.</li>
+    </ul>
+  </div>
+
+  <!-- CONDUCT -->
+  <div class="sec-label">⚖️ Code of Conduct</div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">⛔ Content — Immediate Removal</div>
+      <ul class="clist">
+        <li><span class="ico">⛔</span><span>Racial discrimination, extreme violence, or explicit material.</span></li>
+        <li><span class="ico">⛔</span><span>Plagiarism or unauthorized material use.</span></li>
+        <li><span class="ico">⛔</span><span>Disparaging other games to boost your visibility.</span></li>
+        <li><span class="ico">⛔</span><span>Claiming to be official Marvel Rivals staff or representatives.</span></li>
+        <li><span class="ico">⛔</span><span>Hacking, cheating tools, unapproved software, or bug exploits.</span></li>
+        <li><span class="ico">⛔</span><span>AI-generated content submissions.</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">💬 Discord Community Guidelines</div>
+      <ul class="clist">
+        <li><span class="ico">✅</span><span>Keep interactions positive, friendly, and playful.</span></li>
+        <li><span class="ico">✅</span><span>Embrace diversity — no racism, harassment, or exclusion.</span></li>
+        <li><span class="ico">✅</span><span>Review and follow the <a href="https://discord.com/channels/1193841000108531764/1252190389847199785" target="_blank" rel="noopener">Discord Server Guidelines</a>.</span></li>
+        <li><span class="ico">✅</span><span>Support fellow Climbers — no disruptive or negative interactions.</span></li>
+        <li><span class="ico">✅</span><span>Showcase your creation once per day in the showcase channel.</span></li>
+        <li><span class="ico">⛔</span><span>No promotion of game mods or unauthorized modifications.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- GAMING ACCOUNTS -->
+  <div class="sec-label">🎮 Gaming Account Guidelines</div>
+  <div class="card">
+    <ul>
+      <li>Always use a valid, lawful account for content creation.</li>
+      <li>Never share, lend, borrow, buy, or sell game accounts.</li>
+      <li>⚠️ Violations may result in warnings or permanent game account bans.</li>
+    </ul>
+  </div>
+
+  <!-- EXIT -->
+  <div class="sec-label">📤 Exiting the Program</div>
+  <div class="card">
+    <ul>
+      <li>Contact a <strong>Rivals Climbers Program Helper</strong> in Discord during working hours.</li>
+      <li>The team will process your request and guide you through the exit steps.</li>
+    </ul>
+  </div>
+
+  <!-- SUPPORT -->
+  <div class="sec-label">🎧 Feedback &amp; Support</div>
+  <div class="card">
+    <ul>
+      <li>DM <strong>@Climber-helper</strong> in Discord for questions, concerns, or suggestions.</li>
+      <li>We periodically collect feedback to keep improving the program.</li>
+    </ul>
+  </div>
+
+  <!-- FAQ -->
+  <div class="sec-label">❓ FAQ</div>
+  <div class="card">
+    <div class="faq-item">
+      <div class="faq-q">Can I tell others I'm a Rivals Climbers creator?</div>
+      <div class="faq-a">Yes! You're welcome to share that you're part of the Rivals Climbers Program.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Are there monthly content quotas?</div>
+      <div class="faq-a">No fixed quota. 1 month inactive → reminder DM. 2 consecutive months inactive → removal from the program.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What happens if I violate the guidelines?</div>
+      <div class="faq-a">First unintentional offense: warning, no penalty. Repeated or serious violations: removal and termination of collaboration. You may appeal if you believe an error was made.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Do I keep ownership of my content?</div>
+      <div class="faq-a">Yes — you retain full ownership. If Marvel Rivals wants to reuse your work, they'll reach out via Discord DM or email for permission first.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Who do I contact for unresolved issues?</div>
+      <div class="faq-a">Reach out to the Rivals Climbers Program Helper in the Discord server.</div>
+    </div>
+  </div>
+
+  <footer>Rivals Climbers Program — Official Creator Guidelines · Marvel Rivals</footer>
+</div>
+</body>
+</html>
